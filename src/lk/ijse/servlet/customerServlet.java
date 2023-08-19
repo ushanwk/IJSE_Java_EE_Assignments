@@ -106,6 +106,24 @@ public class customerServlet extends HttpServlet {
 
                     break;
 
+
+                case "update":
+                    PreparedStatement pstm3 = connection.prepareStatement("update customer set customerName=?,customerAddress=? where customerId=?");
+                    pstm3.setObject(3, cusID);
+                    pstm3.setObject(1, cusName);
+                    pstm3.setObject(2, cusAddress);
+                    if (pstm3.executeUpdate() > 0) {
+                        resp.addHeader("Content-Type","application/json");
+
+                        JsonObjectBuilder m = Json.createObjectBuilder();
+                        m.add("state","OK");
+                        m.add("message","Succesfuly Update");
+                        m.add("data","Succesfuly Update");
+                        writer.print(m.build());
+                    }
+
+                    break;
+
             }
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
