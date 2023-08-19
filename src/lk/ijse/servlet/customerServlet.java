@@ -59,6 +59,51 @@ public class customerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 
+        String cusID = req.getParameter("cusID");
+        String cusName = req.getParameter("cusName");
+        String cusAddress = req.getParameter("cusAddress");
+        String option = req.getParameter("option");
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/JavaEEAssignment", "root", "ushan1234");
+            PrintWriter writer = resp.getWriter();
+
+            switch (option) {
+                case "add":
+                    PreparedStatement pstm = connection.prepareStatement("insert into customer values(?,?,?)");
+                    pstm.setObject(1, cusID);
+                    pstm.setObject(2, cusName);
+                    pstm.setObject(3, cusAddress);
+                    if (pstm.executeUpdate() > 0) {
+
+                        resp.addHeader("Content-Type","application/json");
+
+                        JsonObjectBuilder m = Json.createObjectBuilder();
+                        m.add("state","OK");
+                        m.add("message","Succesfuly Added");
+                        m.add("data","Succesfuly Added");
+                        writer.print(m.build());
+
+                    }
+
+                    break;
+
+            }
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            PrintWriter writer = resp.getWriter();
+
+            resp.addHeader("Content-Type","application/json");
+
+            JsonObjectBuilder m = Json.createObjectBuilder();
+            m.add("state","NO");
+            m.add("message",e.getMessage());
+            m.add("data","Not Added");
+            writer.print(m.build());
+        }
+
     }
 
 }

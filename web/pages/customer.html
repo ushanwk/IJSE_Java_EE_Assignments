@@ -98,9 +98,32 @@
         });
     }
 
+
     $('#getAll').click(function (){
         loadAll();
     });
+
+
+    $('#add').click(function(){
+
+        var data = $('#customerForm').serialize();
+
+        $.ajax({
+            url: "customer?option=add",
+            method: "post",
+            data: data,
+            success:function(e){
+                loadAll();
+                alert(e.message)
+            },
+            error:function(e){
+                loadAll();
+                alert(e.message)
+            }
+        });
+
+    });
+
 
 </script>
 
