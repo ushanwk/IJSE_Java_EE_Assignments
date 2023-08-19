@@ -125,6 +125,23 @@
     });
 
 
+    $('#delete').click(function(){
+
+        var data = $('#customerForm').serialize();
+
+        $.ajax({
+            url: "customer?option=delete",
+            method: "post",
+            data: data,
+            success:function(e){
+                loadAll();
+                alert(e.message)
+            }
+        });
+
+    });
+
+
 </script>
 
 

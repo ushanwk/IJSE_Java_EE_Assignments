@@ -89,6 +89,23 @@ public class customerServlet extends HttpServlet {
 
                     break;
 
+
+
+                case "delete":
+                    PreparedStatement pstm2 = connection.prepareStatement("delete from customer where customerId=?");
+                    pstm2.setObject(1, cusID);
+                    if (pstm2.executeUpdate() > 0) {
+                        resp.addHeader("Content-Type","application/json");
+
+                        JsonObjectBuilder m = Json.createObjectBuilder();
+                        m.add("state","OK");
+                        m.add("message","Succesfuly Delete");
+                        m.add("data","Succesfuly Delete");
+                        writer.print(m.build());
+                    }
+
+                    break;
+
             }
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
