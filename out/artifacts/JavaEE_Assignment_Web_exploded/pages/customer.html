@@ -9,8 +9,6 @@
     <meta charset="UTF-8">
     <title>Customer Manage</title>
     <meta content="width=device-width initial-scale=1" name="viewport">
-    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/css/styles.css" rel="stylesheet">
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
           integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" rel="stylesheet">
     <style>
@@ -18,9 +16,14 @@
             cursor: pointer;
         }
     </style>
-    <link rel="stylesheet" href="../assests/css/styles.css">
+
     <link rel="stylesheet" href="../assests/css/bootstrap.css">
+    <link rel="stylesheet" href="../assests/css/styles.css">
+
+    <script src="../assests/js/jquery-3.6.1.min.js"></script>
     <script src="../assests/js/bootstrap.bundle.js"></script>
+
+
 </head>
 <body>
 <!--customer content-->
@@ -45,11 +48,11 @@
                     <span class="control-error" id="lblcusaddress"></span>
                 </div>
                 <div class="btn-group">
-                    <button formaction="customer?option=add" type="button" formmethod="post" class="btn btn-primary" id="btnCustomer">Save Customer</button>
-                    <button formaction="customer?option=delete" type="button" formmethod="post" class="btn btn-danger" id="btnCusDelete">Remove</button>
-                    <button formaction="customer?option=update" type="button" formmethod="post" class="btn btn-warning" id="btnUpdate">Update</button>
-                    <button type="button"  class="btn btn-success" id="btnGetAll" >Get All</button>
-                    <button formaction="/pos_one" class="btn btn-danger" id="btn-clear1">Clear All</button>
+                    <button formaction="customer?option=add" type="button" formmethod="post" class="btn btn-primary" id="add">Save Customer</button>
+                    <button formaction="customer?option=delete" type="button" formmethod="post" class="btn btn-danger" id="delete">Remove</button>
+                    <button formaction="customer?option=update" type="button" formmethod="post" class="btn btn-warning" id="update">Update</button>
+                    <button type="button"  class="btn btn-success" id="getAll" >Get All</button>
+                    <button formaction="/pos_one" class="btn btn-danger" id="clear">Clear All</button>
                 </div>
             </form>
         </div>
@@ -71,8 +74,36 @@
 </main>
 
 
-<script src="../assets/js/jquery-3.6.1.min.js"></script>
-<script src="../assets/js/bootstrap.min.js"></script>
+<script>
+
+    function loadAll(){
+        $.ajax({
+            url:"customer",
+            success:function (res) {
+                let customers = $(res);
+
+                $('tblCustomer').empty();
+
+                for (let i = 0; i < customers.length; i++) {
+                    let id=customers[i].id;
+                    let name=customers[i].name;
+                    let address= customers[i].address;
+
+                    let row =`<tr><td>${id}</td><td>${name}</td><td>${address}</td></tr>`;
+                    $('#tblCustomer').append(row);
+                }
+                console.log("recieved")
+
+            }
+        });
+    }
+
+    $('#getAll').click(function (){
+        loadAll();
+    });
+
+</script>
+
 
 </body>
 </html>
