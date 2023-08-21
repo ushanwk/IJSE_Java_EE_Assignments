@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="app">
+    <output-path>$PROJECT_DIR$/out/artifacts/app</output-path>
+    <root id="archive" name="app.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="JavaEE-Assignment" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="javax.json-1.1.4" />
+          <element id="library" level="project" name="javax.json-api-1.1.4" />
+          <element id="library" level="project" name="mysql-connector-java-8.0.11" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="JavaEE-Assignment/web/Web" />
+    </root>
+  </artifact>
+</component>

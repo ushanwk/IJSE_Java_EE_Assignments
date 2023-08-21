@@ -1,8 +1,6 @@
 package lk.ijse.servlet;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
+import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -59,19 +57,30 @@ public class customerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 
-        String cusID = req.getParameter("cusID");
-        String cusName = req.getParameter("cusName");
-        String cusAddress = req.getParameter("cusAddress");
+        resp.addHeader("Content-Type","application/json");
+
+        PrintWriter writer = resp.getWriter();
+
+        JsonReader reader = Json.createReader(req.getReader());
+
+        JsonObject jsonObject = reader.readObject();
+
+
+        String cusId = jsonObject.getString("id");
+        String cusName = jsonObject.getString("name");
+        String cusAddress = jsonObject.getString("address");
+
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/JavaEEAssignment", "root", "ushan1234");
-            PrintWriter writer = resp.getWriter();
+
 
                     PreparedStatement pstm = connection.prepareStatement("insert into customer values(?,?,?)");
-                    pstm.setObject(1, cusID);
+                    pstm.setObject(1, cusId);
                     pstm.setObject(2, cusName);
                     pstm.setObject(3, cusAddress);
+
                     if (pstm.executeUpdate() > 0) {
 
                         resp.addHeader("Content-Type","application/json");
@@ -80,13 +89,13 @@ public class customerServlet extends HttpServlet {
                         m.add("state","OK");
                         m.add("message","Succesfuly Added");
                         m.add("data","Succesfuly Added");
+                        resp.setStatus(200);
                         writer.print(m.build());
 
                     }
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         } catch (SQLException e) {
-            PrintWriter writer = resp.getWriter();
 
             resp.addHeader("Content-Type","application/json");
 
@@ -109,12 +118,18 @@ public class customerServlet extends HttpServlet {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/JavaEEAssignment", "root", "ushan1234");
             PrintWriter writer = resp.getWriter();
 
-            String cusID = req.getParameter("cusID");
-            String cusName = req.getParameter("cusName");
-            String cusAddress = req.getParameter("cusAddress");
+            JsonReader reader = Json.createReader(req.getReader());
+
+            JsonObject jsonObject = reader.readObject();
+
+
+            String cusId = jsonObject.getString("id");
+            String cusName = jsonObject.getString("name");
+            String cusAddress = jsonObject.getString("address");
+
 
             PreparedStatement pstm3 = connection.prepareStatement("update customer set customerName=?,customerAddress=? where customerId=?");
-            pstm3.setObject(3, cusID);
+            pstm3.setObject(3, cusId);
             pstm3.setObject(1, cusName);
             pstm3.setObject(2, cusAddress);
             if (pstm3.executeUpdate() > 0) {
@@ -145,10 +160,15 @@ public class customerServlet extends HttpServlet {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/JavaEEAssignment", "root", "ushan1234");
             PrintWriter writer = resp.getWriter();
 
-            String cusID = req.getParameter("cusID");
+            JsonReader reader = Json.createReader(req.getReader());
+
+            JsonObject jsonObject = reader.readObject();
+
+            String cusId = jsonObject.getString("id");
+
 
             PreparedStatement pstm2 = connection.prepareStatement("delete from customer where customerId=?");
-            pstm2.setObject(1, cusID);
+            pstm2.setObject(1, cusId);
             if (pstm2.executeUpdate() > 0) {
                 resp.addHeader("Content-Type","application/json");
 

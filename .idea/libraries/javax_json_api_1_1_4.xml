@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="javax.json-api-1.1.4">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/Json-with-Ajax/src/lk/ijse/lib/javax.json-api-1.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Json-with-Ajax/lib/javax.json-api-1.1.4.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

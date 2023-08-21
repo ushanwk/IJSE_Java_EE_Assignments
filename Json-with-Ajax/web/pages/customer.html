@@ -48,10 +48,10 @@
                     <span class="control-error" id="lblcusaddress"></span>
                 </div>
                 <div class="btn-group">
-                    <button formaction="customer?option=add" type="button" formmethod="post" class="btn btn-primary" id="add">Save Customer</button>
-                    <button formaction="customer?option=delete" type="button" formmethod="post" class="btn btn-danger" id="delete">Remove</button>
-                    <button formaction="customer?option=update" type="button" formmethod="post" class="btn btn-warning" id="update">Update</button>
-                    <button type="button"  class="btn btn-success" id="getAll" >Get All</button>
+                    <button type="button" class="btn btn-primary" id="add">Save Customer</button>
+                    <button type="button" class="btn btn-danger" id="delete">Remove</button>
+                    <button type="button" class="btn btn-warning" id="update">Update</button>
+                    <button type="button" class="btn btn-success" id="getAll" >Get All</button>
                     <button formaction="/pos_one" class="btn btn-danger" id="clear">Clear All</button>
                 </div>
             </form>
@@ -74,6 +74,8 @@
 </main>
 
 
+
+
 <script>
 
     function loadAll(){
@@ -82,7 +84,7 @@
             success:function (res) {
                 let customers = $(res);
 
-                $('tblCustomer').empty();
+                $('#tblCustomer').empty();
 
                 for (let i = 0; i < customers.length; i++) {
                     let id=customers[i].id;
@@ -106,12 +108,24 @@
 
     $('#add').click(function(){
 
-        var data = $('#customerForm').serialize();
+        // var data = $('#customerForm').serialize();
+
+        let cusId = $('#txtCustomerID').val();
+        let cusName = $('#txtCustomerName').val();
+        let cusAddress = $('#txtCustomerAddress').val();
+
+        let customer = {
+            id : cusId,
+            name : cusName,
+            address : cusAddress
+        }
 
         $.ajax({
             url: "customer",
             method: "post",
-            data: data,
+            data: JSON.stringify(customer),
+            contentType: 'application/json',
+
             success:function(e){
                 loadAll();
                 alert(e.message)
@@ -127,12 +141,18 @@
 
     $('#delete').click(function(){
 
-        var data = $('#customerForm').serialize();
+        let cusId = $('#txtCustomerID').val();
+
+        let customer = {
+            id : cusId,
+        }
 
         $.ajax({
             url: "customer",
             method: "delete",
-            data: data,
+            data: JSON.stringify(customer),
+            contentType: 'application/json',
+
             success:function(e){
                 loadAll();
                 alert(e.message)
@@ -144,12 +164,22 @@
 
     $('#update').click(function(){
 
-        var data = $('#customerForm').serialize();
+        let cusId = $('#txtCustomerID').val();
+        let cusName = $('#txtCustomerName').val();
+        let cusAddress = $('#txtCustomerAddress').val();
+
+        let customer = {
+            id : cusId,
+            name : cusName,
+            address : cusAddress
+        }
 
         $.ajax({
             url: "customer",
             method: "put",
-            data: data,
+            data: JSON.stringify(customer),
+            contentType: 'application/json',
+
             success:function(e){
                 loadAll();
                 alert(e.message)
