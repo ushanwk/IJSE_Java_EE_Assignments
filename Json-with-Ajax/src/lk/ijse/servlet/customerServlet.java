@@ -62,15 +62,12 @@ public class customerServlet extends HttpServlet {
         String cusID = req.getParameter("cusID");
         String cusName = req.getParameter("cusName");
         String cusAddress = req.getParameter("cusAddress");
-        String option = req.getParameter("option");
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/JavaEEAssignment", "root", "ushan1234");
             PrintWriter writer = resp.getWriter();
 
-            switch (option) {
-                case "add":
                     PreparedStatement pstm = connection.prepareStatement("insert into customer values(?,?,?)");
                     pstm.setObject(1, cusID);
                     pstm.setObject(2, cusName);
@@ -86,45 +83,6 @@ public class customerServlet extends HttpServlet {
                         writer.print(m.build());
 
                     }
-
-                    break;
-
-
-
-                case "delete":
-                    PreparedStatement pstm2 = connection.prepareStatement("delete from customer where customerId=?");
-                    pstm2.setObject(1, cusID);
-                    if (pstm2.executeUpdate() > 0) {
-                        resp.addHeader("Content-Type","application/json");
-
-                        JsonObjectBuilder m = Json.createObjectBuilder();
-                        m.add("state","OK");
-                        m.add("message","Succesfuly Delete");
-                        m.add("data","Succesfuly Delete");
-                        writer.print(m.build());
-                    }
-
-                    break;
-
-
-                case "update":
-                    PreparedStatement pstm3 = connection.prepareStatement("update customer set customerName=?,customerAddress=? where customerId=?");
-                    pstm3.setObject(3, cusID);
-                    pstm3.setObject(1, cusName);
-                    pstm3.setObject(2, cusAddress);
-                    if (pstm3.executeUpdate() > 0) {
-                        resp.addHeader("Content-Type","application/json");
-
-                        JsonObjectBuilder m = Json.createObjectBuilder();
-                        m.add("state","OK");
-                        m.add("message","Succesfuly Update");
-                        m.add("data","Succesfuly Update");
-                        writer.print(m.build());
-                    }
-
-                    break;
-
-            }
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
@@ -140,5 +98,75 @@ public class customerServlet extends HttpServlet {
         }
 
     }
+
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        try {
+
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/JavaEEAssignment", "root", "ushan1234");
+            PrintWriter writer = resp.getWriter();
+
+            String cusID = req.getParameter("cusID");
+            String cusName = req.getParameter("cusName");
+            String cusAddress = req.getParameter("cusAddress");
+
+            PreparedStatement pstm3 = connection.prepareStatement("update customer set customerName=?,customerAddress=? where customerId=?");
+            pstm3.setObject(3, cusID);
+            pstm3.setObject(1, cusName);
+            pstm3.setObject(2, cusAddress);
+            if (pstm3.executeUpdate() > 0) {
+                resp.addHeader("Content-Type","application/json");
+
+                JsonObjectBuilder m = Json.createObjectBuilder();
+                m.add("state","OK");
+                m.add("message","Succesfuly Update");
+                m.add("data","Succesfuly Update");
+                writer.print(m.build());
+            }
+
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        try {
+
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/JavaEEAssignment", "root", "ushan1234");
+            PrintWriter writer = resp.getWriter();
+
+            String cusID = req.getParameter("cusID");
+
+            PreparedStatement pstm2 = connection.prepareStatement("delete from customer where customerId=?");
+            pstm2.setObject(1, cusID);
+            if (pstm2.executeUpdate() > 0) {
+                resp.addHeader("Content-Type","application/json");
+
+                JsonObjectBuilder m = Json.createObjectBuilder();
+                m.add("state","OK");
+                m.add("message","Succesfuly Delete");
+                m.add("data","Succesfuly Delete");
+                writer.print(m.build());
+            }
+
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
 }

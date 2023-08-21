@@ -109,7 +109,7 @@
         var data = $('#customerForm').serialize();
 
         $.ajax({
-            url: "customer?option=add",
+            url: "customer",
             method: "post",
             data: data,
             success:function(e){
@@ -130,8 +130,8 @@
         var data = $('#customerForm').serialize();
 
         $.ajax({
-            url: "customer?option=delete",
-            method: "post",
+            url: "customer",
+            method: "delete",
             data: data,
             success:function(e){
                 loadAll();
@@ -147,8 +147,8 @@
         var data = $('#customerForm').serialize();
 
         $.ajax({
-            url: "customer?option=update",
-            method: "post",
+            url: "customer",
+            method: "put",
             data: data,
             success:function(e){
                 loadAll();
